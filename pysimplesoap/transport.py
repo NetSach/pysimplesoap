@@ -248,7 +248,6 @@ else:
             self._auth = requests.auth.HTTPDigestAuth(username, password)
 
         def request(self, url, method="GET", body=None, headers={}):
-            url = url.replace('\\', '/')
             args = {
                 'url': url,
                 'auth': self._auth,
