@@ -265,8 +265,8 @@ class SoapClient(object):
                 if self.services is not None:
                     operation = self.get_operation(method)
                     fault_name = detailXml.children()[0].get_name()
-                    # if fault not defined in WSDL, it could be an axis or other 
-                    # standard type (i.e. "hostname"), try to convert it to string 
+                    # if fault not defined in WSDL, it could be an axis or other
+                    # standard type (i.e. "hostname"), try to convert it to string
                     fault = operation['faults'].get(fault_name) or unicode
                     detail = detailXml.children()[0].unmarshall(fault, strict=False)
                 else:
@@ -468,7 +468,11 @@ class SoapClient(object):
         elif isinstance(struct, dict):
             if struct and value:
                 for key in value:
-                    if key not in struct:
+                    if isinstance(key, tuple):
+                        # Special case for inlined items
+                        # in arrays, using tuples.
+                        pass
+                    elif key not in struct:
                         valid = False
                         errors.append('Argument key %s not in parameter. parameter: %s, args: %s' % (key, struct, value))
                     else:
